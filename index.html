@@ -3,183 +3,764 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEON BITE | Experiencia Digital</title>
+    <title>LaunchWeb | Webs que generan clientes</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --bg-black: #080808;
+            --bg-card: #141414;
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
+            --border-color: #222222;
+            --font-main: 'Outfit', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            font-family: var(--font-main);
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-black); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- UI Elements --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            min-height: 48px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-size: 1rem;
+            gap: 0.5rem;
+            font-family: var(--font-main);
+        }
+
+        .btn-white {
+            background-color: var(--text-white);
+            color: var(--bg-black);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-white);
+            border: 1px solid var(--text-white);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--text-white);
+            color: var(--bg-black);
+        }
+
+        .form-control {
+            width: 100%;
+            min-height: 48px;
+            padding: 0 1rem;
+            background-color: #111;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus { outline: none; border-color: var(--text-white); background-color: #1a1a1a; }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(8, 8, 8, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; }
+        
+        .menu-btn {
+            background: none; border: none; color: var(--text-white);
+            font-size: 1.5rem; cursor: pointer; min-height: 48px; min-width: 48px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .nav-links {
+            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
+            background-color: var(--bg-black); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 2rem; z-index: 999;
+        }
+
+        .nav-links.active { left: 0; }
+        .nav-links a { font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
+        .nav-links a:hover { color: #888; }
+        
+        .close-menu {
+            position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none;
+            color: var(--text-white); font-size: 2rem; cursor: pointer;
+            min-height: 48px; min-width: 48px;
+        }
+
+        /* --- Layout --- */
+        section { padding: 6rem 1.5rem; position: relative; }
+        .section-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
+        .section-subtitle { text-align: center; color: var(--text-gray); margin-bottom: 4rem; font-size: 1.1rem; }
+
+        /* --- Hero Section & Chrome Effect --- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        /* Particles Canvas */
+        #particles-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        /* Viscous Liquid Chrome Typography */
+        .chrome-title {
+            font-size: clamp(4rem, 15vw, 9rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+            /* Chrome gradient */
+            background-image: linear-gradient(
+                to bottom,
+                #ffffff 0%,
+                #a8a8a8 22%,
+                #f2f2f2 45%,
+                #ffffff 50%,
+                #4a4a4a 55%,
+                #d4d4d4 78%,
+                #ffffff 100%
+            );
+            background-size: 100% 200%;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: chromeShine 6s infinite linear;
+            /* SVG Gooey Filter applied via CSS filter for viscous look */
+            filter: drop-shadow(0px 10px 20px rgba(255,255,255,0.1));
+            position: relative;
+        }
+
+        /* Add a subtle shine overlay using pseudo-element */
+        .chrome-title::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+            -webkit-background-clip: text;
+            color: transparent;
+            filter: blur(8px);
+        }
+
+        @keyframes chromeShine {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 200%; }
+        }
+
+        .hero-slogan {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-weight: 300;
+            color: var(--text-white);
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* --- Services --- */
+        .services-grid { display: grid; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .service-card:hover { transform: translateY(-10px); border-color: #555; background: #1a1a1a; }
+        .service-icon { font-size: 2.5rem; color: var(--text-white); margin-bottom: 1.5rem; }
+        .service-title { font-size: 1.2rem; margin-bottom: 1rem; font-weight: 800; }
+        .service-desc { color: var(--text-gray); font-size: 0.95rem; }
+
+        /* --- Projects --- */
+        .projects-grid { display: grid; gap: 3rem; max-width: 1200px; margin: 0 auto; }
+        
+        .project-card {
+            background: var(--bg-black);
+            border-radius: 16px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .project-card:hover { transform: translateY(-10px); }
+        .project-card:hover .mockup-container { box-shadow: 0 20px 40px rgba(255,255,255,0.05); border-color: #444; }
+
+        .mockup-container {
+            background: #111;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            /* macOS window style top bar */
+            padding-top: 30px;
+            position: relative;
+            aspect-ratio: 16/10;
+        }
+
+        .mockup-container::before {
+            content: '•••';
+            position: absolute;
+            top: 5px; left: 15px;
+            color: #444;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        .mockup-image-placeholder {
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; color: #333;
+            overflow: hidden;
+        }
+        
+        /* Simulating screenshots with CSS gradients based on project theme */
+        .mockup-dental { background: linear-gradient(to bottom, #f0faf8 20%, #ffffff 100%); color: #1a2f4a; }
+        .mockup-gym { background: linear-gradient(to bottom, #0a0a0a 40%, #ff0033 100%); color: white; }
+        .mockup-neon { background: linear-gradient(to bottom, #0a0514 40%, #00ffcc 100%); color: white; }
+        .mockup-salon { background: linear-gradient(to bottom, #111111 40%, #c9956c 100%); color: white; }
+        .mockup-ecom { background: linear-gradient(to bottom, #ffffff 40%, #ff3d57 100%); color: #111; }
+        .mockup-vet { background: linear-gradient(to bottom, #ffffff 40%, #4caf7d 100%); color: #333; }
+
+        .project-tag {
+            display: inline-block; padding: 4px 12px; background: #222; color: #ccc;
+            border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            margin-bottom: 0.8rem; letter-spacing: 1px;
+        }
+        
+        .project-title { font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 800; }
+        .project-desc { color: var(--text-gray); margin-bottom: 1.5rem; font-size: 0.95rem; }
+
+        /* --- Pricing --- */
+        .pricing-grid { display: grid; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .pricing-card.highlight {
+            border-color: var(--text-white);
+            background: linear-gradient(to bottom, #1a1a1a, #080808);
+            transform: translateY(-10px);
+        }
+        
+        .highlight-badge {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            background: var(--text-white); color: var(--bg-black);
+            padding: 4px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 800;
+        }
+
+        .plan-name { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-gray); }
+        .plan-price { font-size: 2.5rem; font-weight: 900; margin-bottom: 2rem; }
+        
+        .plan-features { flex-grow: 1; margin-bottom: 2rem; }
+        .plan-features li { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1rem; color: #ccc; font-size: 0.95rem; }
+        .plan-features i { color: var(--text-white); margin-top: 4px; }
+
+        /* --- Contact --- */
+        .contact-layout { display: grid; gap: 4rem; max-width: 1000px; margin: 0 auto; }
+        
+        .contact-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            border-radius: 16px;
+        }
+
+        .contact-header { margin-bottom: 2rem; }
+        .contact-header h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .contact-header p { color: var(--text-gray); }
+
+        /* --- Footer --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 1rem; }
+        .footer-social { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+        .footer-social a { color: var(--text-gray); font-size: 1.5rem; transition: var(--transition); }
+        .footer-social a:hover { color: var(--text-white); transform: translateY(-3px); }
+
+        /* WhatsApp Float */
+        .wa-float {
+            position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white;
+            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; z-index: 100; box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* --- Animations --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- Responsive --- */
+        @media (min-width: 768px) {
+            .hero-btns { flex-direction: row; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .projects-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-layout { grid-template-columns: 1fr 1fr; align-items: center; }
+            .btn { min-width: 200px; }
+        }
+
+        @media (min-width: 1024px) {
+            nav { padding: 1rem 5rem; }
+            .menu-btn { display: none; }
+            .nav-links {
+                position: static; height: auto; width: auto; background: none;
+                flex-direction: row; gap: 2.5rem; padding: 0;
+            }
+            .close-menu { display: none; }
+            .nav-links a { font-size: 0.9rem; letter-spacing: 1px; }
+            .services-grid { grid-template-columns: repeat(4, 1fr); }
+            .projects-grid { grid-template-columns: repeat(3, 1fr); }
+            .pricing-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor-dot" data-cursor-dot></div>
-    <div class="cursor-outline" data-cursor-outline></div>
 
-    <!-- Background Grid -->
-    <div class="bg-grid"></div>
-
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <div class="logo glitch-hover" data-text="NEON BITE">NEON BITE</div>
-            <ul class="nav-links">
-                <li><a href="#menu" class="hover-underline">MENU</a></li>
-                <li><a href="#experiencia" class="hover-underline">EXPERIENCIA</a></li>
-                <li><a href="#promos" class="hover-underline">PROMOS</a></li>
-            </ul>
-            <a href="#pedir" class="btn-neon">PEDIR AHORA</a>
-            <div class="mobile-menu-btn">
-                <i class="fa-solid fa-bars"></i>
-            </div>
+    <!-- Nav -->
+    <nav>
+        <a href="#hero" class="logo">LaunchWeb.</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Menú"><i class="fas fa-bars"></i></button>
+        <div class="nav-links" id="navLinks">
+            <button class="close-menu" id="closeMenu"><i class="fas fa-times"></i></button>
+            <a href="#servicios">Servicios</a>
+            <a href="#proyectos">Proyectos</a>
+            <a href="#precios">Precios</a>
+            <a href="#contacto">Contacto</a>
         </div>
     </nav>
 
-    <header class="hero">
+    <!-- Hero -->
+    <section id="hero">
+        <canvas id="particles-canvas"></canvas>
         <div class="hero-content">
-            <h1 class="glitch" data-text="COMIDA QUE EXPLOTA">COMIDA QUE EXPLOTA</h1>
-            <p class="subtitle">Hackea tu hambre. El sabor del futuro ya está aquí.</p>
-            <div class="hero-buttons">
-                <a href="#menu" class="btn-neon primary-glow">ORDENAR YA</a>
+            <h1 class="chrome-title" data-text="LaunchWeb">LaunchWeb</h1>
+            <p class="hero-slogan">Webs que generan clientes</p>
+            <div class="hero-btns">
+                <a href="#proyectos" class="btn btn-white">Ver Proyectos</a>
+                <a href="#contacto" class="btn btn-outline"><i class="fab fa-whatsapp"></i> Contactanos</a>
             </div>
         </div>
-        <div class="hero-image-container">
-            <div class="image-glow"></div>
-            <img src="hero.png" alt="Neon Burger" class="hero-img floating" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.5">
-        </div>
-    </header>
+    </section>
 
-    <!-- Infinite Marquee -->
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <span>URBAN TASTE /// NEON BITE /// NO RULES /// CYBER JUNK FOOD /// </span>
-            <span>URBAN TASTE /// NEON BITE /// NO RULES /// CYBER JUNK FOOD /// </span>
-            <span>URBAN TASTE /// NEON BITE /// NO RULES /// CYBER JUNK FOOD /// </span>
-        </div>
-    </div>
-
-    <section id="menu" class="section menu-section">
-        <h2 class="section-title glitch-hover" data-text="// EL MENÚ">// EL MENÚ</h2>
+    <!-- Services -->
+    <section id="servicios">
+        <h2 class="section-title reveal">Metodología Elite</h2>
+        <p class="section-subtitle reveal">Desarrollamos herramientas de venta, no solo páginas web.</p>
         
-        <div class="menu-grid">
-            <!-- Card 1 -->
-            <div class="menu-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000">
-                <div class="card-glow neon-pink"></div>
-                <div class="card-image">
-                    <!-- Reusing hero image due to quota limit -->
-                    <img src="hero.png" alt="Cyber Burger">
-                </div>
-                <div class="card-content">
-                    <h3>CYBER BURGER</h3>
-                    <p>Doble carne, queso radiactivo, bacon y salsa secreta glitch.</p>
-                    <div class="card-footer">
-                        <span class="price">4050 <span>CRD</span></span>
-                        <button class="btn-icon"><i class="fa-solid fa-plus"></i></button>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <i class="fas fa-pen-nib service-icon"></i>
+                <h3 class="service-title">Diseño Web Premium</h3>
+                <p class="service-desc">Estéticas ultra modernas y minimalistas enfocadas en transmitir máxima autoridad y confianza a tus clientes.</p>
+            </div>
+            <div class="service-card reveal">
+                <i class="fas fa-mobile-alt service-icon"></i>
+                <h3 class="service-title">Mobile Responsive</h3>
+                <p class="service-desc">El 80% de tus clientes llegarán desde el celular. Desarrollamos con enfoque "Mobile-First" para una navegación fluida.</p>
+            </div>
+            <div class="service-card reveal">
+                <i class="fas fa-bolt service-icon"></i>
+                <h3 class="service-title">Entrega Rápida</h3>
+                <p class="service-desc">Sistemas optimizados nos permiten entregar proyectos completos en tiempo récord sin sacrificar calidad.</p>
+            </div>
+            <div class="service-card reveal">
+                <i class="fas fa-headset service-icon"></i>
+                <h3 class="service-title">Soporte Incluido</h3>
+                <p class="service-desc">No te dejamos solo. Incluimos mantenimiento, actualizaciones y soporte técnico directo ante cualquier eventualidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="proyectos" style="background: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a;">
+        <h2 class="section-title reveal">Nuestro Portfolio</h2>
+        <p class="section-subtitle reveal">Casos de éxito y plataformas desarrolladas</p>
+
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card reveal">
+                <div class="mockup-container">
+                    <div class="mockup-image-placeholder mockup-dental">
+                        <i class="fas fa-tooth"></i>
                     </div>
                 </div>
+                <div class="project-tag">Salud</div>
+                <h3 class="project-title">Clínica Sonrisa</h3>
+                <p class="project-desc">Diseño profesional y cálido. Integración de sistema de reservas online de 3 pasos y galería médica.</p>
+                <a href="file:///C:/Users/PC/.gemini/antigravity/scratch/dental_website/index.html" target="_blank" class="btn btn-outline" style="width: 100%; min-height: 40px; border-radius: 8px;">Ver Proyecto <i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i></a>
             </div>
-            
-            <!-- Card 2 -->
-            <div class="menu-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000">
-                <div class="card-glow neon-cyan"></div>
-                <div class="card-image">
-                    <!-- Reusing hero image -->
-                    <img src="hero.png" alt="Neon Fries" style="filter: hue-rotate(90deg);">
-                </div>
-                <div class="card-content">
-                    <h3>NEON FRIES</h3>
-                    <p>Papas rústicas bañadas en cheddar líquido y jalapeños eléctricos.</p>
-                    <div class="card-footer">
-                        <span class="price">2100 <span>CRD</span></span>
-                        <button class="btn-icon"><i class="fa-solid fa-plus"></i></button>
+
+            <!-- Project 2 -->
+            <div class="project-card reveal">
+                <div class="mockup-container">
+                    <div class="mockup-image-placeholder mockup-gym">
+                        <i class="fas fa-dumbbell"></i>
                     </div>
                 </div>
+                <div class="project-tag">Fitness</div>
+                <h3 class="project-title">Iron Forge Gym</h3>
+                <p class="project-desc">Plataforma de alta energía con tema oscuro. Incluye registro de atletas y panel de control de membresías.</p>
+                <a href="file:///C:/Users/PC/.gemini/antigravity/scratch/gym_website/index.html" target="_blank" class="btn btn-outline" style="width: 100%; min-height: 40px; border-radius: 8px;">Ver Proyecto <i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i></a>
             </div>
 
-            <!-- Card 3 -->
-            <div class="menu-card" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-perspective="1000">
-                <div class="card-glow neon-green"></div>
-                <div class="card-image">
-                    <!-- Reusing hero image -->
-                    <img src="hero.png" alt="Toxic Drink" style="filter: hue-rotate(180deg) saturate(2);">
-                </div>
-                <div class="card-content">
-                    <h3>TOXIC DRINK</h3>
-                    <p>Cóctel energético verde fluorescente. Sabor lima-limón extremo.</p>
-                    <div class="card-footer">
-                        <span class="price">1500 <span>CRD</span></span>
-                        <button class="btn-icon"><i class="fa-solid fa-plus"></i></button>
+            <!-- Project 3 -->
+            <div class="project-card reveal">
+                <div class="mockup-container">
+                    <div class="mockup-image-placeholder mockup-neon">
+                        <i class="fas fa-hamburger"></i>
                     </div>
                 </div>
+                <div class="project-tag">Gastronomía</div>
+                <h3 class="project-title">Neon Bite</h3>
+                <p class="project-desc">Experiencia inmersiva cyberpunk con interfaz "glassmorphism", menú digital y carrito de compras dinámico.</p>
+                <a href="file:///C:/Users/PC/.gemini/antigravity/scratch/neon-bite/index.html" target="_blank" class="btn btn-outline" style="width: 100%; min-height: 40px; border-radius: 8px;">Ver Proyecto <i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i></a>
             </div>
-        </div>
-    </section>
 
-    <section id="experiencia" class="section exp-section">
-        <div class="exp-content reveal">
-            <h2 class="glitch" data-text="SISTEMA SOBRECARGADO">SISTEMA SOBRECARGADO</h2>
-            <p>No somos un restaurante. Somos una simulación de sabor. Luces de neón, beats intensos y comida que te reinicia el sistema operativo.</p>
-            <div class="features-grid">
-                <div class="feature-box">
-                    <i class="fa-solid fa-bolt neon-text-cyan"></i>
-                    <h4>FAST DELIVERY</h4>
-                    <p>Entregas a la velocidad de la fibra óptica.</p>
+            <!-- Project 4 -->
+            <div class="project-card reveal">
+                <div class="mockup-container">
+                    <div class="mockup-image-placeholder mockup-salon">
+                        <i class="fas fa-cut"></i>
+                    </div>
                 </div>
-                <div class="feature-box">
-                    <i class="fa-solid fa-gamepad neon-text-pink"></i>
-                    <h4>GAMER ZONE</h4>
-                    <p>Locales equipados para tu escuadrón.</p>
+                <div class="project-tag">Belleza</div>
+                <h3 class="project-title">Lumière Salón</h3>
+                <p class="project-desc">Landing de alta costura con agendamiento de turnos, galería interactiva filtrable y programa de fidelidad.</p>
+                <a href="file:///C:/Users/PC/.gemini/antigravity/scratch/hairsalon_website/index.html" target="_blank" class="btn btn-outline" style="width: 100%; min-height: 40px; border-radius: 8px;">Ver Proyecto <i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i></a>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card reveal">
+                <div class="mockup-container">
+                    <div class="mockup-image-placeholder mockup-ecom">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
                 </div>
+                <div class="project-tag">Ecommerce</div>
+                <h3 class="project-title">NEXUS Store</h3>
+                <p class="project-desc">Single-Page Application completa. Flujo desde catálogo hasta checkout multi-paso 100% optimizado para CRO.</p>
+                <a href="file:///C:/Users/PC/.gemini/antigravity/scratch/ecommerce_website/index.html" target="_blank" class="btn btn-outline" style="width: 100%; min-height: 40px; border-radius: 8px;">Ver Proyecto <i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i></a>
             </div>
-        </div>
-        <div class="exp-visual reveal">
-            <div class="abstract-shape shape-1"></div>
-            <div class="abstract-shape shape-2"></div>
-            <div class="glitch-box">ERROR 404: DIET NOT FOUND</div>
-        </div>
-    </section>
 
-    <section id="promos" class="section promos-section">
-        <h2 class="section-title glitch-hover" data-text="/// OFERTAS">/// OFERTAS</h2>
-        <div class="promo-banner" data-tilt>
-            <div class="promo-info">
-                <h3>COMBO MATRIX</h3>
-                <p>2 Cyber Burgers + 2 Neon Fries + 2 Bebidas + Skin Exclusivo</p>
-                <div class="price-strike">12000 CRD</div>
-                <div class="price-neon">8500 CRD</div>
-                <button class="btn-neon primary-glow mt-4">RECLAMAR LOOT</button>
-            </div>
-            <div class="promo-image">
-                <img src="hero.png" alt="Combo" class="floating">
+            <!-- Project 6 -->
+            <div class="project-card reveal">
+                <div class="mockup-container">
+                    <div class="mockup-image-placeholder mockup-vet">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                </div>
+                <div class="project-tag">Veterinaria</div>
+                <h3 class="project-title">Clínica Amigos</h3>
+                <p class="project-desc">Estética amigable y confiable. Formulario de urgencias, pet shop integrado y perfiles del equipo médico.</p>
+                <a href="file:///C:/Users/PC/.gemini/antigravity/scratch/veterinary_website/index.html" target="_blank" class="btn btn-outline" style="width: 100%; min-height: 40px; border-radius: 8px;">Ver Proyecto <i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i></a>
             </div>
         </div>
     </section>
 
-    <section id="social" class="section social-section">
-        <h2 class="section-title text-center">JOIN THE NETWORK</h2>
-        <div class="social-feed">
-            <div class="feed-item reveal"><img src="hero.png" alt="Feed 1"><div class="feed-overlay"><i class="fa-brands fa-instagram"></i></div></div>
-            <div class="feed-item reveal" style="transition-delay: 0.1s"><img src="hero.png" alt="Feed 2" style="filter: hue-rotate(45deg);"><div class="feed-overlay"><i class="fa-brands fa-tiktok"></i></div></div>
-            <div class="feed-item reveal" style="transition-delay: 0.2s"><img src="hero.png" alt="Feed 3" style="filter: invert(1);"><div class="feed-overlay"><i class="fa-brands fa-instagram"></i></div></div>
-            <div class="feed-item reveal" style="transition-delay: 0.3s"><img src="hero.png" alt="Feed 4" style="filter: saturate(3);"><div class="feed-overlay"><i class="fa-brands fa-twitter"></i></div></div>
+    <!-- Pricing -->
+    <section id="precios">
+        <h2 class="section-title reveal">Inversión</h2>
+        <p class="section-subtitle reveal">Planes transparentes adaptados a cada etapa de tu negocio</p>
+
+        <div class="pricing-grid">
+            <div class="pricing-card reveal">
+                <div class="plan-name">BÁSICO</div>
+                <div class="plan-price">$40.000</div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Landing Page (1 sección)</li>
+                    <li><i class="fas fa-check"></i> Diseño Responsivo</li>
+                    <li><i class="fas fa-check"></i> Botón WhatsApp</li>
+                    <li><i class="fas fa-check"></i> Integración Redes Sociales</li>
+                </ul>
+                <a href="#contacto" class="btn btn-outline">Elegir Plan</a>
+            </div>
+
+            <div class="pricing-card highlight reveal">
+                <div class="highlight-badge">MÁS ELEGIDO</div>
+                <div class="plan-name" style="color:var(--text-white);">ESTÁNDAR</div>
+                <div class="plan-price">$80.000</div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Multi-página (Hasta 4)</li>
+                    <li><i class="fas fa-check"></i> Formulario de Contacto</li>
+                    <li><i class="fas fa-check"></i> Galería de Imágenes</li>
+                    <li><i class="fas fa-check"></i> SEO Básico</li>
+                </ul>
+                <a href="#contacto" class="btn btn-white">Elegir Plan</a>
+            </div>
+
+            <div class="pricing-card reveal">
+                <div class="plan-name">PREMIUM</div>
+                <div class="plan-price">$150.000</div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Sistema de Reservas/Turnos</li>
+                    <li><i class="fas fa-check"></i> Diseño Personalizado UI/UX</li>
+                    <li><i class="fas fa-check"></i> Animaciones Avanzadas</li>
+                    <li><i class="fas fa-check"></i> Panel Autoadministrable</li>
+                </ul>
+                <a href="#contacto" class="btn btn-outline">Elegir Plan</a>
+            </div>
+
+            <div class="pricing-card reveal">
+                <div class="plan-name">FULL ECOMMERCE</div>
+                <div class="plan-price">$250.000</div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Tienda Online Completa</li>
+                    <li><i class="fas fa-check"></i> Pasarelas de Pago</li>
+                    <li><i class="fas fa-check"></i> Carrito y Checkout</li>
+                    <li><i class="fas fa-check"></i> Configuración de Envíos</li>
+                </ul>
+                <a href="#contacto" class="btn btn-outline">Elegir Plan</a>
+            </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="footer-top">
-            <div class="footer-logo glitch-hover" data-text="NEON BITE">NEON BITE</div>
-            <div class="footer-links">
-                <a href="#"><i class="fa-brands fa-discord"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="#"><i class="fa-brands fa-twitch"></i></a>
+    <!-- Contact -->
+    <section id="contacto" style="background: #0a0a0a; border-top: 1px solid #1a1a1a;">
+        <div class="contact-layout">
+            <div class="reveal">
+                <h2 class="section-title" style="text-align: left;">Impulsá tu marca<br>hoy mismo.</h2>
+                <p style="color: var(--text-gray); font-size: 1.2rem; margin-bottom: 2rem;">¿Listo para digitalizar tu negocio con una web que realmente convierta visitas en clientes?</p>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem;">
+                    <i class="fab fa-whatsapp" style="font-size: 3rem; color: #25D366;"></i>
+                    <div>
+                        <div style="font-weight: 800; font-size: 1.2rem;">Hablemos por WhatsApp</div>
+                        <div style="color: var(--text-gray);">Atención inmediata</div>
+                    </div>
+                </div>
+                <a href="https://wa.me/5491100000000" target="_blank" class="btn btn-white" style="width: fit-content;">Iniciar Chat <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="contact-box reveal">
+                <div class="contact-header">
+                    <h3>Envíanos un mensaje</h3>
+                    <p><i class="far fa-clock"></i> Respondemos en menos de 24hs</p>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('Mensaje enviado. Te contactaremos pronto.');">
+                    <div style="display: grid; gap: 1rem;">
+                        <input type="text" class="form-control" placeholder="Tu Nombre / Empresa" required>
+                        <select class="form-control" required style="color: #ccc;">
+                            <option value="">Tipo de Negocio...</option>
+                            <option value="salud">Salud / Estética</option>
+                            <option value="gastronomia">Gastronomía</option>
+                            <option value="ecommerce">Venta de Productos</option>
+                            <option value="servicios">Servicios Profesionales</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        <textarea class="form-control" placeholder="Contanos brevemente qué necesitas..." style="min-height: 120px; padding-top: 1rem;" required></textarea>
+                        <button type="submit" class="btn btn-white" style="width: 100%; margin-top: 0.5rem;">Solicitar Presupuesto</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>SYSTEM ONLINE /// &copy; 2026 NEON BITE CORP. /// ALL RIGHTS RESERVED.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">LaunchWeb.</div>
+        <div class="footer-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-behance"></i></a>
         </div>
+        <p style="color: #555; font-size: 0.9rem;">&copy; 2026 LaunchWeb Agency. Desarrollado con tecnología de vanguardia.</p>
     </footer>
 
+    <!-- Floating WA -->
+    <a href="https://wa.me/5491100000000" class="wa-float" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-    <script src="app.js"></script>
+    <script>
+        // Mobile Menu
+        const menuBtn = document.getElementById('menuBtn');
+        const closeMenuBtn = document.getElementById('closeMenu');
+        const navLinks = document.getElementById('navLinks');
+        const navItems = navLinks.querySelectorAll('a');
+
+        menuBtn.addEventListener('click', () => { navLinks.classList.add('active'); document.body.style.overflow = 'hidden'; });
+        closeMenuBtn.addEventListener('click', () => { navLinks.classList.remove('active'); document.body.style.overflow = 'auto'; });
+        navItems.forEach(item => {
+            item.addEventListener('click', () => { navLinks.classList.remove('active'); document.body.style.overflow = 'auto'; });
+        });
+
+        // Scroll Reveal
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                
+                if(target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+                    window.scrollTo({
+                         top: offsetPosition,
+                         behavior: "smooth"
+                    });
+                }
+            });
+        });
+
+        // Background Particles Animation
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 0.5 + 0.1;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y -= this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            const particleCount = window.innerWidth < 768 ? 40 : 100;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+    </script>
 </body>
 </html>
